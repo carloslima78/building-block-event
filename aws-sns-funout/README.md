@@ -14,7 +14,11 @@ Os recursos definidos neste código são responsáveis por criar as filas SQS, o
 
 ### Arquivo `variables.tf` - Documentação
 
-Este arquivo `variables.tf` é utilizado para definir as variáveis necessárias para a criação de recursos na AWS (Amazon Web Services) dentro de um ambiente de arquitetura de mensageria, como SNS (Simple Notification Service) e SQS (Simple Queue Service). Cada bloco de variável tem um propósito específico, detalhado a seguir:
+Este arquivo `variables.tf` é utilizado para definir as variáveis necessárias para a criação de recursos na AWS (Amazon Web Services) dentro de um ambiente de arquitetura de mensageria, como SNS (Simple Notification Service) e SQS (Simple Queue Service).
+
+Essas variáveis permitem uma configuração flexível e parametrizada para a criação dos recursos de mensageria na AWS, como tópicos SNS e filas SQS, atendendo às necessidades específicas do building block proposto, como região, tipo de fila (FIFO ou não), nomes das filas e políticas de filtragem de mensagens.
+
+Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 ---
 
