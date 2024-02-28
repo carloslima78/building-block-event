@@ -23,8 +23,8 @@ Os recursos definidos neste código são responsáveis por criar as filas SQS, o
   - **Valor padrão**:
     ```json
     {
-      "order": { "eventType": ["order_placed"] },
-      "payment": { "eventType": ["payment_received"] },
+      "order":    { "eventType": ["order_placed"] },
+      "payment":  { "eventType": ["payment_received"] },
       "shipment": { "eventType": ["shipment_dispatched"] }
     }
     ```
