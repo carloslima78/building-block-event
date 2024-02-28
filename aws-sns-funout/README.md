@@ -75,11 +75,11 @@ Este recurso cria a política de permissão para o tópico SNS enviar mensagens 
 
 Para testar o funcionamento das filas DLQ, vamos seguir os passos abaixo:
 
-- **Processar a mensagem até falhar**:
-  - Vamos produzir 2 ou mais mensagens para uma das filas, vamos utilizar como exemplo a fila **payment**.
-  - No menu à esquerda, clique em **Enviar e receber mensagens** e depois em **Ver mensagens**.
-  - Isso simula um consumidor da fila pegando a mensagem para processamento.
-  - Uma das mensagens deve aparecer na tela. Clique em "Iniciar busca de mensagens" e depois em "Interromper a busca". Repita esse passo mais 3 vezes (um total de 4 vezes).
-  - Após a quarta tentativa, a mensagem será redirecionada automaticamente para a DLQ **payment.dlq** associada à **payment**.
+1. **Processar a mensagem até falhar**:
+   - Vamos produzir 2 ou mais mensagens para uma das filas, vamos utilizar como exemplo a fila **payment**.
+   - No menu à esquerda, clique em **Enviar e receber mensagens** e depois em **Ver mensagens**.
+   - Isso simula um consumidor da fila pegando a mensagem para processamento.
+   - Uma das mensagens deve aparecer na tela. Clique em "Iniciar busca de mensagens" e depois em "Interromper a busca". Repita esse passo mais 3 vezes (um total de 4 vezes).
+   - Após a quarta tentativa, a mensagem será redirecionada automaticamente para a DLQ **payment.dlq** associada à **payment**.
 
-Dessa forma, estaremos simulando o processamento falhado da mensagem até que ela seja redirecionada para a DLQ após o número de tentativas definido pela variável **maxReceiveCount**. 
+Dessa forma, estaremos simulando o processamento falhado da mensagem até que ela
