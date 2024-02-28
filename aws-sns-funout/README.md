@@ -12,58 +12,165 @@ Este building block consiste em uma receita para padronizar eventos sincronizado
 
 Os recursos definidos neste código são responsáveis por criar as filas SQS, o tópico SNS, as assinaturas do tópico para as filas, e as políticas de permissão.
 
-### Variáveis
+### Arquivo `variables.tf` - Documentação
 
-- **queue_names**: Variável que define os nomes das filas SQS a serem criadas.
-  - **Descrição**: Nomes das filas SQS.
-  - **Valor padrão**: `["order", "payment", "shipment"]`
+Este arquivo `variables.tf` é utilizado para definir as variáveis necessárias para a criação de recursos na AWS (Amazon Web Services) dentro de um ambiente de arquitetura de mensageria, como SNS (Simple Notification Service) e SQS (Simple Queue Service). Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
-- **filter_policies**: Variável que define os filtros para cada assinatura das filas.
-  - **Descrição**: Filtros para cada assinatura das filas SQS.
-  - **Valor padrão**:
-    ```json
-    {
-      "order":    { "eventType": ["order_placed"] },
-      "payment":  { "eventType": ["payment_received"] },
-      "shipment": { "eventType": ["shipment_dispatched"] }
-    }
-    ```
+---
 
-- **sns_topic_name**: Variável que define o nome do tópico SNS.
-  - **Descrição**: Nome do tópico SNS.
-  - **Valor padrão**: `"confirmed_sale"`
+#### `aws_region`
 
-### `aws_sqs_queue` (DLQ)
+- **Objetivo**: Define a região da AWS onde os recursos serão criados.
+- **Descrição**: Esta variável é utilizada para especificar a região geográfica da AWS onde os serviços como SNS e SQS serão implantados.
+- **Valor Padrão**: "us-east-1"
+  
+---
 
-Este recurso cria as filas SQS de DLQ com base nos nomes definidos.
+#### `sns_topic`
 
-- **Nome**: `${var.queue_names[count.index]}-dlq`
-- Cada fila de DLQ está associada à fila correspondente da `queue_names`.
+- **Objetivo**: Define o nome do tópico SNS a ser criado.
+- **Descrição**: O tópico SNS é uma entidade central em mensageria de pub/sub (publicação/assinatura) da AWS. Esta variável define o nome do tópico que será utilizado para notificações.
+- **Valor Padrão**: "confirmed_sale"
+  
+---
 
-### `aws_sqs_queue` (Filas Principais)
+#### `is_fifo_topic`
 
-Este recurso cria as filas SQS principais com a política de redrive para enviar mensagens para a DLQ após 2 tentativas.
+- **Objetivo**: Indica se o tópico SNS deve ser FIFO (First-In-First-Out) ou não.
+- **Descrição**: Quando esta variável é configurada como `true`, o tópico SNS será configurado para seguir a ordem de chegada das mensagens (FIFO), garantindo uma entrega ordenada.
+- **Tipo**: Booleano (`true` ou `false`)
+- **Valor Padrão**: `false`
 
-- **Nome**: `var.queue_names[count.index]`
-- **Política de Redrive**: As mensagens serão redirecionadas para a DLQ após 2 tentativas de processamento.
+---
 
-### `aws_sns_topic`
+#### `sqs_queues`
 
-Este recurso cria o tópico SNS com o nome definido.
+- **Objetivo**: Define os nomes das filas SQS a serem criadas.
+- **Descrição**: As filas SQS são utilizadas para armazenar mensagens em um ambiente de filas de mensagens. Esta variável especifica os nomes das filas que serão criadas.
+- **Valor Padrão**: ["order", "payment", "shipment"]
 
-- **Nome**: `var.sns_topic_name`
+---
 
-### `aws_sns_topic_subscription`
+#### `is_fifo_queues`
 
-Este recurso cria as assinaturas do tópico SNS para as filas SQS, com base nos filtros definidos.
+- **Objetivo**: Indica se as filas SQS devem ser FIFO (First-In-First-Out) ou não.
+- **Descrição**: Similar ao `is_fifo_topic`, esta variável define se as filas SQS devem seguir a ordem de chegada das mensagens (FIFO) ou não.
+- **Tipo**: Lista de booleanos (`true` ou `false`) para cada fila especificada em `sqs_queues`.
+- **Valor Padrão**: [false, false, false]
 
-- Cada fila SQS tem uma assinatura no tópico SNS com seu respectivo filtro de `eventType`.
+---
 
-### `aws_sqs_queue_policy`
+#### `filter_policies`
 
-Este recurso cria a política de permissão para o tópico SNS enviar mensagens para as filas SQS.
+- **Objetivo**: Define os filtros de política para cada assinatura nas filas SQS.
+- **Descrição**: Esta variável é utilizada para especificar os filtros de política para diferentes tipos de mensagens que serão direcionadas para cada fila SQS.
+- **Valor Padrão**: 
+  ```json
+  {
+    "order":    { "eventType": ["order_placed"] },
+    "payment":  { "eventType": ["payment_received"] },
+    "shipment": { "eventType": ["shipment_dispatched"] }
+  }
 
-- A permissão é concedida ao tópico SNS para enviar mensagens para as filas SQS.
+Isso significa que as mensagens com eventos de order_placed serão enviadas para a fila order, mensagens com eventos de payment_received para a fila payment, e mensagens com eventos de shipment_dispatched para a fila shipment.
+
+### Arquivo `main.tf` - Documentação
+
+Este arquivo `main.tf` contém a configuração dos recursos na AWS (Amazon Web Services) para criar um ambiente de mensageria utilizando SNS (Simple Notification Service) e SQS (Simple Queue Service). Cada bloco de recurso tem um propósito específico, detalhado a seguir:
+
+---
+
+#### `provider "aws"`
+
+- **Objetivo**: Configura o provedor AWS para definir a região onde os recursos serão criados.
+- **Descrição**: Este bloco define o provedor AWS e utiliza a variável `aws_region` para configurar a região na qual os recursos serão provisionados.
+  
+---
+
+#### `resource "aws_sns_topic" "topic"`
+
+- **Objetivo**: Cria o tópico SNS.
+- **Descrição**: Este recurso cria o tópico SNS com o nome definido pela variável `sns_topic`. Se `is_fifo_topic` for `true`, o tópico será FIFO (First-In-First-Out).
+  
+---
+
+#### `resource "aws_sqs_queue" "queue"`
+
+- **Objetivo**: Cria as filas SQS principais para assinantes do tópico SNS.
+- **Descrição**: Este recurso cria as filas SQS principais para cada nome especificado em `sqs_queues`. Se `is_fifo_queues` for `true`, a fila será FIFO.
+- **Configuração adicional**: Define uma política de redirecionamento (`redrive_policy`) para direcionar mensagens para uma Dead Letter Queue (fila de mensagens inválidas ou não processáveis) após duas tentativas de processamento mal sucedidas.
+
+---
+
+#### `resource "aws_sqs_queue" "dlq"`
+
+- **Objetivo**: Cria as filas SQS de Dead Letter Queue (DLQ) para cada fila assinante.
+- **Descrição**: Este recurso cria uma fila de DLQ para cada fila principal, para onde as mensagens inválidas ou não processáveis serão redirecionadas.
+
+---
+
+#### `resource "aws_sns_topic_subscription" "queue_subscription"`
+
+- **Objetivo**: Cria as inscrições das filas SQS no tópico SNS.
+- **Descrição**: Este recurso configura as inscrições das filas SQS no tópico SNS para que as mensagens sejam entregues às filas corretas.
+- **Configuração adicional**: Utiliza `filter_policy` para filtrar mensagens com base nos critérios definidos em `filter_policies` para cada fila.
+
+---
+
+#### `resource "aws_sqs_queue_policy" "queue_policy"`
+
+- **Objetivo**: Aplica políticas às filas SQS para permitir o envio de mensagens do tópico SNS.
+- **Descrição**: Este recurso aplica políticas às filas SQS para permitir que o tópico SNS envie mensagens para essas filas.
+- **Configuração adicional**: Define uma política que permite que o serviço SNS (`sns.amazonaws.com`) envie mensagens para as filas SQS especificadas, com base no `aws:SourceArn` do tópico SNS correspondente.
+
+---
+
+Este arquivo `main.tf` é responsável por configurar a infraestrutura de mensageria na AWS, incluindo a criação de tópicos SNS, filas SQS principais e suas filas de DLQ, inscrições das filas no tópico SNS e políticas para permitir o envio de mensagens entre esses recursos. Essa configuração proporciona um sistema robusto de mensageria capaz de lidar com diferentes tipos de mensagens e cenários de processamento.
+
+### Arquivo `output.tf` - Documentação
+
+Este arquivo `output.tf` contém as definições de saída (outputs) que fornecem informações sobre os recursos criados no ambiente de mensageria na AWS. Cada output é detalhado a seguir:
+
+---
+
+#### `output "topic_arn"`
+
+- **Objetivo**: Output para o ARN do tópico SNS.
+- **Descrição**: Este output fornece o Amazon Resource Name (ARN) do tópico SNS criado.
+  
+---
+
+#### `output "queue_ids"`
+
+- **Objetivo**: Output para os IDs das filas SQS principais assinantes do tópico SNS.
+- **Descrição**: Este output fornece uma lista dos IDs das filas SQS principais que são assinantes do tópico SNS.
+  
+---
+
+#### `output "dlq_ids"`
+
+- **Objetivo**: Output para os IDs das filas SQS de Dead Letter Queue (DLQ).
+- **Descrição**: Este output fornece uma lista dos IDs das filas SQS de DLQ criadas para cada fila principal.
+
+---
+
+#### `output "subscription_arns"`
+
+- **Objetivo**: Output para os ARNs das inscrições das filas SQS no tópico SNS.
+- **Descrição**: Este output fornece uma lista dos ARNs das inscrições das filas SQS no tópico SNS, indicando quais filas estão inscritas para receber mensagens do tópico.
+
+---
+
+#### `output "queue_policy_ids"`
+
+- **Objetivo**: Output para os IDs das políticas aplicadas às filas SQS.
+- **Descrição**: Este output fornece uma lista dos IDs das políticas aplicadas às filas SQS para permitir o envio de mensagens do tópico SNS.
+
+---
+
+Estes outputs são úteis para recuperar informações importantes sobre os recursos criados no ambiente de mensageria, como o ARN do tópico SNS para referência em outras configurações, os IDs das filas SQS para monitoramento e gerenciamento, os ARNs das inscrições das filas no tópico SNS para verificar as configurações de entrega de mensagens e os IDs das políticas aplicadas às filas para controle de acesso e permissões.
+
+Essas saídas são essenciais para integrar e utilizar os recursos criados neste ambiente de mensageria na AWS.
 
 ## Testando as Filas DLQ
 
