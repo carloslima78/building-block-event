@@ -71,6 +71,11 @@ resource "aws_sqs_queue" "return_queues" {
   count      = length(var.return_sqs_queues)
   name       = var.is_fifo_return_queues[count.index] ? "${var.return_sqs_queues[count.index]}.fifo" : var.return_sqs_queues[count.index]
   fifo_queue = var.is_fifo_return_queues[count.index]
+
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.return_dlq[count.index].arn
+    maxReceiveCount     = 2
+  })
 }
 
 # Recurso para criar as filas SQS de Dead Letter Queue (DLQ) para cada fila de retorno
