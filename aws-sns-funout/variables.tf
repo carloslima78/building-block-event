@@ -31,14 +31,48 @@ variable "is_fifo_queues" {
   default     = [false, false, false]
 }
 
+# Variável para indicar quais filas terão filtro (true) ou não (false)
+variable "use_filter" {
+  description = "Indica se a fila deve ter filtro (true) ou não (false)"
+  type        = list(bool)
+  default     = [true, true, false]
+}
+
 # Variável para os filtros de política para cada assinatura nas filas SQS
 variable "filter_policies" {
-  description = "Filtros para cada assinatura"
+  description = "Filtros para cada fila SQS"
+  type        = map(any)
   default = {
     "order"    = { eventType = ["order_placed"] },
     "payment"  = { eventType = ["payment_received"] },
-    "shipment" = { eventType = ["shipment_dispatched"] }
+    "shipment" = null
   }
 }
 
+# Variável para os nomes dos tópicos SNS de retorno (opcional)
+variable "return_sns_topics" {
+  description = "Nomes dos tópicos SNS de retorno (opcional)"
+  type        = list(string)
+  default     = ["return_confirmed_sale"]
+}
 
+# Variável para indicar se os tópicos SNS de retorno devem ser FIFO (true) ou não (false)
+variable "is_fifo_return_topics" {
+  description = "Indica se os tópicos SNS de retorno devem ser FIFO (true) ou não (false)"
+  type        = list(bool)
+  default     = [false]
+}
+
+# Variável para os nomes das filas SQS de retorno (opcional)
+variable "return_sqs_queues" {
+  description = "Nomes das filas SQS de retorno (opcional)"
+  type        = list(string)
+  default     = ["order_return"]
+}
+
+# Variável para indicar se as filas SQS de retorno devem ser FIFO (true) ou não (false)
+variable "is_fifo_return_queues" {
+  description = "Indica se as filas SQS de retorno devem ser FIFO (true) ou não (false)"
+  type        = list(bool)
+  default     = [false]
+}
