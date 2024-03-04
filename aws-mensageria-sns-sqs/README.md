@@ -1,6 +1,10 @@
 # Building Block de Eventos Baseado em SNS e SQS
 
-Este building block consiste em uma receita para padronizar eventos sincronizados por fanout usando o Amazon Simple Notification Service (SNS) e o Amazon Simple Queue Service (SQS). Cada componente desempenha um papel vital na arquitetura:
+Este building block é um template projetado para padronizar a sincronização de eventos e comandos por meio de fanout, incluindo eventos de resposta caso sejam necessários, utilizando o Amazon Simple Notification Service (SNS) e o Amazon Simple Queue Service (SQS). 
+
+Além disso, inclui a implementação do padrão de dead-letter queue (DLQ) para cada fila assinante, garantindo uma abordagem robusta para o tratamento de mensagens que não podem ser processadas com sucesso
+
+Cada componente é essencial para a eficácia da arquitetura, facilitando a integração e o gerenciamento eficiente de eventos e comandos:
 
 - **Tópico SNS**: Cria o tópico SNS para facilitar a comunicação entre as filas SQS e os produtores de eventos, garantindo um modelo de fanout para propagar eventos para múltiplos consumidores de forma eficiente.
 
