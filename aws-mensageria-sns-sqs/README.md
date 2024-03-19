@@ -31,7 +31,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 - **Objetivo**: Define a região da AWS onde os recursos serão criados.
 - **Descrição**: Esta variável é utilizada para especificar a região geográfica da AWS onde os serviços como SNS e SQS serão implantados.
-- **Valor Padrão**: "us-east-1"
+- **Valor**: "us-east-1"
   
 ---
 
@@ -39,7 +39,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 - **Objetivo**: Define o nome do tópico SNS a ser criado.
 - **Descrição**: O tópico SNS é uma entidade central em mensageria de pub/sub (publicação/assinatura) da AWS. Esta variável define o nome do tópico que será utilizado para notificações.
-- **Valor para Exemplo**: "confirmed_sale"
+- **Valor**: "confirmed_sale"
   
 ---
 
@@ -48,7 +48,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 - **Objetivo**: Indica se o tópico SNS deve ser FIFO (First-In-First-Out) ou não.
 - **Descrição**: Quando esta variável é configurada como `true`, o tópico SNS será configurado para seguir a ordem de chegada das mensagens (FIFO), garantindo uma entrega ordenada.
 - **Tipo**: Booleano (`true` ou `false`)
-- **Valor Padrão**: `false`
+- **Valor**: `false`
 
 ---
 
@@ -56,7 +56,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 - **Objetivo**: Define os nomes das filas SQS a serem criadas.
 - **Descrição**: As filas SQS são utilizadas para armazenar mensagens em um ambiente de filas de mensagens. Esta variável especifica os nomes das filas que serão criadas.
-- **Valor para Exemplo**: ["order", "payment", "shipment"]
+- **Valor**: ["order", "payment", "shipment"]
 
 ---
 
@@ -65,7 +65,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 - **Objetivo**: Indica se as filas SQS devem ser FIFO (First-In-First-Out) ou não.
 - **Descrição**: Similar ao `is_fifo_topic`, esta variável define se as filas SQS devem seguir a ordem de chegada das mensagens (FIFO) ou não.
 - **Tipo**: Lista de booleanos (`true` ou `false`) para cada fila especificada em `sqs_queues`.
-- **Valor Padrão**: [false, false, false]
+- **Valor**: [false, false, false]
 
 ---
 
@@ -74,7 +74,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 - **Objetivo**: Indica se a fila deve ter filtro (true) ou não (false).
 - **Descrição**: Esta variável é utilizada para indicar se cada fila SQS deve ter um filtro associado para - determinar quais mensagens são entregues a essa fila.
 - **Tipo**: Lista de booleanos (true ou false) para cada fila especificada em sqs_queues.
-- **Valor Padrão**: [true, true, false]
+- **Valor**: [true, true, false]
 
 ---
 
@@ -82,13 +82,14 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 - **Objetivo**: Define os filtros de política para cada assinatura nas filas SQS.
 - **Descrição**: Esta variável é utilizada para especificar os filtros de política para diferentes tipos de mensagens que serão direcionadas para cada fila SQS.
-- **Valor Padrão**: 
+- **Valor**: 
   ```json
   {
     "order":    { "eventType": ["order_placed"] },
     "payment":  { "eventType": ["payment_received"] },
     "shipment": { "eventType": ["shipment_dispatched"] }
   }
+  ```
 
 Isso significa que as mensagens com eventos de order_placed serão enviadas para a fila order, mensagens com eventos de payment_received para a fila payment, e mensagens com eventos de shipment_dispatched para a fila shipment.
 
@@ -99,7 +100,7 @@ Isso significa que as mensagens com eventos de order_placed serão enviadas para
 - **Objetivo**: Define os nomes dos tópicos SNS de retorno.
 - **Descrição**: Esta variável é utilizada para definir os nomes dos tópicos SNS que serão criados para lidar com respostas de consumidores para produtores.
 - **Tipo**: Lista de strings.
-- **Valor Padrão**: ["return_confirmed_sale"]
+- **Valor**: ["return_confirmed_sale"]
 
 ---
 
@@ -108,7 +109,7 @@ Isso significa que as mensagens com eventos de order_placed serão enviadas para
 - **Objetivo**: Indica se os tópicos SNS de retorno devem ser FIFO (First-In-First-Out) ou não.
 - **Descrição**: Quando esta variável é configurada como true, os tópicos SNS de retorno serão configurados para seguir a ordem de chegada das mensagens (FIFO).
 - **Tipo**: Lista de booleanos (true ou false) para cada tópico especificado em return_sns_topics.
-- **Valor Padrão**: [false]
+- **Valor**: [false]
 
 ---
 
@@ -117,7 +118,7 @@ Isso significa que as mensagens com eventos de order_placed serão enviadas para
 - **Objetivo**: Define os nomes das filas SQS de retorno.
 - **Descrição**: Esta variável é utilizada para definir os nomes das filas SQS de retorno que serão criadas para lidar com respostas de consumidores para produtores.
 - **Tipo**: Lista de strings.
-- **Valor Padrão**: ["order_return"].
+- **Valor**: ["order_return"].
 
 ---
 
@@ -126,7 +127,7 @@ Isso significa que as mensagens com eventos de order_placed serão enviadas para
 - **Objetivo**: Indica se as filas SQS de retorno devem ser FIFO (First-In-First-Out) ou não.
 - **Descrição**: Quando esta variável é configurada como true, as filas SQS de retorno serão configuradas para seguir a ordem de chegada das mensagens (FIFO).
 - **Tipo**: Lista de booleanos (true ou false) para cada fila especificada em return_sqs_queues.
-- **Valor Padrão**:  [false]
+- **Valor**: [false]
 
 ---
 
