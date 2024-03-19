@@ -64,6 +64,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 ---
 
+
 ## Produzindo uma Mensagem no Stream
 
 Para produzir uma mensagem em um dos streams Kinesis:
@@ -78,7 +79,7 @@ aws kinesis put-record --stream-name stream1 --partition-key 123 --data "Sua men
 Substitua *stream1* pelo nome do stream desejado e *Sua mensagem aqui* pela mensagem que deseja enviar.
 
 
-### Consumindo a Mensagem do Stream
+## Consumindo a Mensagem do Stream
 
 Para consumir a mensagem do stream:
 
@@ -97,4 +98,4 @@ echo "Sua resposta codificada em base64" | base64 --decode
 ```
 Substitua *Sua resposta codificada* em base64 pela resposta que você recebeu do comando anterior.
 
-É possível decodificar a mensagem em base64 pelo site [Decodificar mensagem em base64](https://www.base64decode.org/)
+É possível decodificar a mensagem em base64 pelo site [base64.org](https://www.base64decode.org/)
