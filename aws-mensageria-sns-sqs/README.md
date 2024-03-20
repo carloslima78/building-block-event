@@ -85,7 +85,7 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 - **Objetivo**: Indica se a fila deve ter filtro (true) ou não (false).
 - **Descrição**: Esta variável é utilizada para indicar se cada fila SQS deve ter um filtro associado para - determinar quais mensagens são entregues a essa fila.
 - **Tipo**: Lista de booleanos (true ou false) para cada fila especificada em sqs_queues.
-- **Valor**: [true, true, false]
+- **Valor**: [true, true, true]
 
 ---
 
