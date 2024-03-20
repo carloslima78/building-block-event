@@ -2,7 +2,8 @@
 
 Este building block é um template projetado para padronizar a sincronização de eventos e comandos por meio de fanout, incluindo eventos de resposta caso sejam necessários, utilizando o Amazon Simple Notification Service (SNS) e o Amazon Simple Queue Service (SQS). 
 
-Além disso, inclui a implementação do padrão de dead-letter queue (DLQ) para cada fila assinante, garantindo uma abordagem robusta para o tratamento de mensagens que não podem ser processadas com sucesso
+Além disso, inclui a implementação do padrão de dead-letter queue (DLQ) para cada fila assinante, garantindo uma abordagem robusta para o tratamento de mensagens que não podem ser processadas com sucesso.
+
 
 ![Diagrama](../diagramas/message.png)
 

@@ -4,6 +4,7 @@ Este building block é um template projetado para facilitar a criação de strea
 
 Ele é usado para coletar, processar e analisar grandes volumes de dados em tempo real, sendo especialmente útil em aplicações que exigem baixa latência, como análises em tempo real, monitoramento de logs, detecção de fraudes e muito mais.
 
+
 ![Diagrama](../diagramas/stream.png)
 
 
