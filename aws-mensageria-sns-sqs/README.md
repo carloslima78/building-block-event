@@ -4,10 +4,6 @@ Este building block é um template projetado para padronizar a sincronização d
 
 Além disso, inclui a implementação do padrão de dead-letter queue (DLQ) para cada fila assinante, garantindo uma abordagem robusta para o tratamento de mensagens que não podem ser processadas com sucesso.
 
-
-![Diagrama](../diagramas/message.png)
-
-
 Cada componente é essencial para a eficácia da arquitetura, facilitando a integração e o gerenciamento eficiente de eventos e comandos:
 
 - **Tópico SNS**: Cria o tópico SNS para facilitar a comunicação entre as filas SQS e os produtores de eventos, garantindo um modelo de fanout para propagar eventos para múltiplos consumidores de forma eficiente.
@@ -15,6 +11,9 @@ Cada componente é essencial para a eficácia da arquitetura, facilitando a inte
 - **Filas SQS**: Cria as filas SQS principais assinantes do tópico SNS, com políticas de redrive para direcionar mensagens para a DLQ após um número específico de tentativas de processamento.
 
 - **Filas SQS (DLQ)**: Cria as filas SQS de Dead Letter Queue (DLQ) associadas às filas principais, permitindo o armazenamento de mensagens que falharam no processamento.
+
+
+![Diagrama](../diagramas/message.png)
   
 ## Parametrização Flexível dos Recursos
 

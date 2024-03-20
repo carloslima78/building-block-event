@@ -5,9 +5,6 @@ Este building block é um template projetado para facilitar a criação de strea
 Ele é usado para coletar, processar e analisar grandes volumes de dados em tempo real, sendo especialmente útil em aplicações que exigem baixa latência, como análises em tempo real, monitoramento de logs, detecção de fraudes e muito mais.
 
 
-![Diagrama](../diagramas/stream.png)
-
-
 ## Anatomia Básica do Amazon Kinesis
 
 O Amazon Kinesis é composto por três partes principais:
@@ -17,6 +14,10 @@ O Amazon Kinesis é composto por três partes principais:
 - **Shards**: Um shard é uma unidade de capacidade de processamento dentro de um stream Kinesis. Cada shard tem uma capacidade máxima de processamento de dados, limitada a 1 MB por segundo para gravação e 2 MB por segundo para leitura. Essa capacidade de processamento é compartilhada entre todos os produtores e consumidores que interagem com o shard. Adicionar mais shards a um stream aumenta a capacidade total de processamento, permitindo lidar com mais dados em paralelo.
 
 - **Data**: Os dados dentro de um stream Kinesis são os registros individuais que são enviados e processados. Cada registro é uma unidade de dados que contém a informação enviada para o stream. Esses registros podem ser logs de servidores, eventos de sensores, transações financeiras, tweets, ou qualquer outro tipo de dado que precisa ser capturado e processado em tempo real. Cada registro é atribuído a um shard para armazenamento e processamento subsequente.
+
+
+![Diagrama](../diagramas/stream.png)
+
 
 ## Parametrização Flexível dos Recursos
 
