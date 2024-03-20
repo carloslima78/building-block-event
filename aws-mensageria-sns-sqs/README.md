@@ -63,6 +63,14 @@ Cada bloco de variável tem um propósito específico, detalhado a seguir:
 
 ---
 
+#### `max_receive_count`
+
+- **Objetivo**: Define a quantidade máxima de recebimentos de mensagens com falha
+- **Descrição**: Esta variável especifica a quantidade de mensagens com falha que podem ser processadas antes de serem enviadas para a fila DLQ.
+- **Valor**: 2
+
+---
+
 #### `is_fifo_queues`
 
 - **Objetivo**: Indica se as filas SQS devem ser FIFO (First-In-First-Out) ou não.

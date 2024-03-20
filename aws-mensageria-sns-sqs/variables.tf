@@ -24,6 +24,13 @@ variable "sqs_queues" {
   default     = ["order", "payment", "shipment"]
 }
 
+# Variável para definir a quantidade máxima de recebimentos de mensagens com falha
+variable "max_receive_count" {
+  description = "Define a quantidade máxima de recebimentos de mensagens com falha"
+  type        = number
+  default     = 3
+}
+
 # Variável para indicar se as filas SQS devem ser FIFO (true) ou não (false)
 variable "is_fifo_queues" {
   description = "Indica se as filas SQS devem ser FIFO (true) ou não (false)"
@@ -53,7 +60,7 @@ variable "filter_policies" {
 variable "return_sns_topics" {
   description = "Nomes dos tópicos SNS de retorno (opcional)"
   type        = list(string)
-  default     = ["return_confirmed_sale"]
+  default     = []
 }
 
 # Variável para indicar se os tópicos SNS de retorno devem ser FIFO (true) ou não (false)
@@ -67,7 +74,7 @@ variable "is_fifo_return_topics" {
 variable "return_sqs_queues" {
   description = "Nomes das filas SQS de retorno (opcional)"
   type        = list(string)
-  default     = ["order_return"]
+  default     = []
 }
 
 # Variável para indicar se as filas SQS de retorno devem ser FIFO (true) ou não (false)
